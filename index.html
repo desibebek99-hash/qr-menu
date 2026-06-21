@@ -207,7 +207,26 @@ body{
         Total:
         <span id="totalHarga">Rp0</span>
     </div>
+ <div style="margin-top:15px">
 
+    <label>
+        <strong>Catatan Pesanan</strong>
+    </label>
+
+    <textarea
+        id="orderNote"
+        placeholder="Contoh: tanpa gula, pedas level 2, tanpa bawang..."
+        style="
+            width:100%;
+            margin-top:8px;
+            padding:10px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            min-height:80px;
+        ">
+    </textarea>
+
+</div>
     <button class="order-btn"
         onclick="sendOrder()">
         Pesan via WhatsApp
@@ -362,10 +381,23 @@ Meja ${tableNumber}
 `;
     }
 
-    message +=
+const note =
+document.getElementById("orderNote").value;
+
+message +=
 `
 Total: Rp${total.toLocaleString('id-ID')}
 `;
+
+if(note.trim() !== ""){
+
+message +=
+`
+
+Catatan:
+${note}
+`;
+}
 
     let url =
     "https://wa.me/6287857365303?text=" +

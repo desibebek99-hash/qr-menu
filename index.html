@@ -194,6 +194,26 @@ body{
         Keranjang
         <span class="badge" id="itemCount">0</span>
     </h2>
+    <div style="margin-bottom:15px;">
+
+    <label>
+        <strong>Atas Nama</strong>
+    </label>
+
+    <input
+        type="text"
+        id="customerName"
+        placeholder="Masukkan nama pelanggan"
+        style="
+            width:100%;
+            padding:10px;
+            margin-top:8px;
+            border-radius:8px;
+            border:1px solid #ccc;
+        "
+    >
+
+</div>
 
     <div id="cartList">
 
@@ -359,13 +379,20 @@ function sendOrder(){
 
         return;
     }
+const customerName =
+document.getElementById("customerName").value.trim();
 
-    let total = 0;
+if(customerName === ""){
 
+    alert("Silakan isi nama terlebih dahulu");
+
+    return;
+}
     let message =
 `Pesanan Baru
 
 Meja ${tableNumber}
+Atas Nama: ${customerName}
 
 `;
 

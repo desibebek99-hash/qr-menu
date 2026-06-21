@@ -38,7 +38,7 @@ body{
 .table-info{
     background:#ff9800;
     color:white;
-    padding:8px;
+    padding:8px 15px;
     border-radius:20px;
     display:inline-block;
 }
@@ -69,6 +69,10 @@ body{
     border-radius:8px;
     width:100%;
     cursor:pointer;
+}
+
+.add-btn:hover{
+    opacity:.9;
 }
 
 .cart{
@@ -105,6 +109,7 @@ body{
     border-radius:50%;
     background:#ddd;
     cursor:pointer;
+    font-weight:bold;
 }
 
 .total{
@@ -125,6 +130,10 @@ body{
     cursor:pointer;
 }
 
+.order-btn:hover{
+    opacity:.9;
+}
+
 .empty{
     color:#888;
     text-align:center;
@@ -136,6 +145,29 @@ body{
     padding:3px 8px;
     border-radius:20px;
     font-size:12px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+.input-group input,
+.input-group textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.input-group textarea{
+    min-height:80px;
+    resize:vertical;
 }
 
 </style>
@@ -194,26 +226,14 @@ body{
         Keranjang
         <span class="badge" id="itemCount">0</span>
     </h2>
-    <div style="margin-bottom:15px;">
 
-    <label>
-        <strong>Atas Nama</strong>
-    </label>
-
-    <input
-        type="text"
-        id="customerName"
-        placeholder="Masukkan nama pelanggan"
-        style="
-            width:100%;
-            padding:10px;
-            margin-top:8px;
-            border-radius:8px;
-            border:1px solid #ccc;
-        "
-    >
-
-</div>
+    <div class="input-group">
+        <label>Atas Nama</label>
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Masukkan nama pelanggan">
+    </div>
 
     <div id="cartList">
 
@@ -227,27 +247,17 @@ body{
         Total:
         <span id="totalHarga">Rp0</span>
     </div>
- <div style="margin-top:15px">
 
-    <label>
-        <strong>Catatan Pesanan</strong>
-    </label>
+    <div class="input-group">
+        <label>Catatan Pesanan</label>
 
-    <textarea
-        id="orderNote"
-        placeholder="Contoh: tanpa gula, pedas level 2, tanpa bawang..."
-        style="
-            width:100%;
-            margin-top:8px;
-            padding:10px;
-            border-radius:8px;
-            border:1px solid #ccc;
-            min-height:80px;
-        ">
-    </textarea>
+        <textarea
+            id="orderNote"
+            placeholder="Contoh: tanpa gula, pedas level 2, tanpa bawang..."></textarea>
+    </div>
 
-</div>
-    <button class="order-btn"
+    <button
+        class="order-btn"
         onclick="sendOrder()">
         Pesan via WhatsApp
     </button>
@@ -307,9 +317,7 @@ function decrease(name){
 function renderCart(){
 
     let html = "";
-
     let total = 0;
-
     let count = 0;
 
     for(let item in cart){
@@ -320,7 +328,6 @@ function renderCart(){
             qty * cart[item].price;
 
         total += subtotal;
-
         count += qty;
 
         html += `
@@ -353,10 +360,10 @@ function renderCart(){
         `;
     }
 
-    if(count===0){
+    if(count === 0){
 
-        html =
-        `<div class="empty">
+        html = `
+        <div class="empty">
             Belum ada pesanan
         </div>`;
     }
@@ -373,21 +380,27 @@ function renderCart(){
 
 function sendOrder(){
 
-    if(Object.keys(cart).length===0){
+    if(Object.keys(cart).length === 0){
 
         alert("Belum ada pesanan");
 
         return;
     }
-const customerName =
-document.getElementById("customerName").value.trim();
 
-if(customerName === ""){
+    const customerName =
+        document.getElementById("customerName")
+        .value
+        .trim();
 
-    alert("Silakan isi nama terlebih dahulu");
+    if(customerName === ""){
 
-    return;
-}
+        alert("Silakan isi nama terlebih dahulu");
+
+        return;
+    }
+
+    let total = 0;
+
     let message =
 `Pesanan Baru
 
@@ -400,35 +413,31 @@ Atas Nama: ${customerName}
 
         let qty = cart[item].qty;
 
-        total +=
-            qty * cart[item].price;
+        total += qty * cart[item].price;
 
-        message +=
-`${item} x${qty}
+        message += `${item} x${qty}
 `;
     }
 
-const note =
-document.getElementById("orderNote").value;
+    const note =
+        document.getElementById("orderNote").value;
 
-message +=
-`
+    message += `
 Total: Rp${total.toLocaleString('id-ID')}
 `;
 
-if(note.trim() !== ""){
+    if(note.trim() !== ""){
 
-message +=
-`
+        message += `
 
 Catatan:
 ${note}
 `;
-}
+    }
 
     let url =
-    "https://wa.me/6287857365303?text=" +
-    encodeURIComponent(message);
+        "https://wa.me/6287857365303?text=" +
+        encodeURIComponent(message);
 
     window.open(url,"_blank");
 }

@@ -299,6 +299,16 @@ body{
         <input
             type="text"
             id="customerName"
+            document
+.getElementById("customerName")
+.addEventListener("input",function(){
+
+    localStorage.setItem(
+        "customerName",
+        this.value
+    );
+
+});
             placeholder="Masukkan nama pelanggan">
     </div>
 
@@ -340,7 +350,16 @@ const tableNumber =
 
 document.getElementById("tableInfo").innerHTML =
     "Meja " + tableNumber;
+const savedName =
+localStorage.getItem("customerName");
 
+if(savedName){
+
+    document.getElementById(
+        "customerName"
+    ).value = savedName;
+
+}
 let cart =
 JSON.parse(localStorage.getItem("cart")) || {};
 

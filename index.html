@@ -341,7 +341,17 @@ const tableNumber =
 document.getElementById("tableInfo").innerHTML =
     "Meja " + tableNumber;
 
-let cart = {};
+let cart =
+JSON.parse(localStorage.getItem("cart")) || {};
+
+function saveCart(){
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+}
 
 function addItem(name,price){
 
@@ -358,13 +368,15 @@ function addItem(name,price){
 
     }
 
-    renderCart();
+   saveCart();
+   renderCart();
 }
 
 function increase(name){
 
     cart[name].qty++;
 
+    saveCart();
     renderCart();
 }
 
@@ -377,6 +389,7 @@ function decrease(name){
         delete cart[name];
     }
 
+    saveCart();
     renderCart();
 }
 
@@ -507,7 +520,7 @@ ${note}
 
     window.open(url,"_blank");
 }
-
+renderCart();
 </script>
 
 </body>

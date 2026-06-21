@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,97 +8,218 @@
 
 <style>
 body{
-    font-family: Arial,sans-serif;
-    max-width:600px;
-    margin:auto;
-    padding:20px;
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+h1,h2{
+    text-align:center;
+}
+
+#tableInfo{
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:20px;
 }
 
 .menu-item{
-    border:1px solid #ddd;
-    padding:10px;
-    margin:10px 0;
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-item h3{
+    margin:0;
+}
+
+.price{
+    color:#555;
+    margin:8px 0;
 }
 
 button{
-    padding:8px 12px;
+    background:#25D366;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
 }
 
 #cart{
-    margin-top:20px;
-    border-top:2px solid #000;
-    padding-top:10px;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-top:25px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+#cartList li{
+    margin-bottom:8px;
+}
+
+.total{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+.order-btn{
+    width:100%;
+    margin-top:15px;
+    font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Menu Cafe</h1>
+<h1>☕ Menu Cafe</h1>
+
+<div id="tableInfo"></div>
 
 <div class="menu-item">
     <h3>Kopi Susu</h3>
-    <p>Rp18.000</p>
-    <button onclick="addItem('Kopi Susu')">Tambah</button>
+    <div class="price">Rp18.000</div>
+    <button onclick="addItem('Kopi Susu',18000)">Tambah</button>
 </div>
 
 <div class="menu-item">
     <h3>Americano</h3>
-    <p>Rp15.000</p>
-    <button onclick="addItem('Americano')">Tambah</button>
+    <div class="price">Rp15.000</div>
+    <button onclick="addItem('Americano',15000)">Tambah</button>
 </div>
 
 <div class="menu-item">
     <h3>Mie Goreng</h3>
-    <p>Rp20.000</p>
-    <button onclick="addItem('Mie Goreng')">Tambah</button>
+    <div class="price">Rp20.000</div>
+    <button onclick="addItem('Mie Goreng',20000)">Tambah</button>
+</div>
+
+<div class="menu-item">
+    <h3>Nasi Goreng</h3>
+    <div class="price">Rp25.000</div>
+    <button onclick="addItem('Nasi Goreng',25000)">Tambah</button>
 </div>
 
 <div id="cart">
-    <h2>Pesanan</h2>
+
+    <h2>Pesanan Anda</h2>
+
     <ul id="cartList"></ul>
 
-    <button onclick="sendOrder()">
+    <div class="total">
+        Total:
+        <span id="totalHarga">Rp0</span>
+    </div>
+
+    <button class="order-btn" onclick="sendOrder()">
         Pesan via WhatsApp
     </button>
+
 </div>
 
 <script>
-let cart=[];
 
-function addItem(item){
-    cart.push(item);
+const params = new URLSearchParams(window.location.search);
+
+const tableNumber = params.get('table') || '-';
+
+document.getElementById('tableInfo').innerHTML =
+    'Meja ' + tableNumber;
+
+let cart = {};
+
+function addItem(name, price){
+
+    if(cart[name]){
+        cart[name].qty++;
+    }else{
+        cart[name] = {
+            qty:1,
+            price:price
+        };
+    }
+
     renderCart();
 }
 
 function renderCart(){
-    let html='';
 
-    cart.forEach(item=>{
-        html += `<li>${item}</li>`;
-    });
+    let html = '';
+    let total = 0;
 
-    document.getElementById('cartList').innerHTML=html;
+    for(let item in cart){
+
+        let qty = cart[item].qty;
+        let price = cart[item].price;
+        let subtotal = qty * price;
+
+        total += subtotal;
+
+        html += `
+            <li>
+                ${item} x${qty}
+                - Rp${subtotal.toLocaleString('id-ID')}
+            </li>
+        `;
+    }
+
+    document.getElementById('cartList').innerHTML = html;
+
+    document.getElementById('totalHarga').innerHTML =
+        'Rp' + total.toLocaleString('id-ID');
 }
 
 function sendOrder(){
 
-    if(cart.length===0){
-        alert('Belum ada pesanan');
+    if(Object.keys(cart).length === 0){
+
+        alert('Silakan pilih menu terlebih dahulu');
+
         return;
     }
 
-    let message='Pesanan Baru%0A%0A';
+    let total = 0;
 
-    cart.forEach(item=>{
-        message += '- '+item+'%0A';
-    });
+    let message =
+`Pesanan Baru
 
-    window.open(
-      'https://wa.me/6287857365303?text='+message,
-      '_blank'
-    );
+Meja ${tableNumber}
+
+`;
+
+    for(let item in cart){
+
+        let qty = cart[item].qty;
+        let price = cart[item].price;
+
+        total += qty * price;
+
+        message += `${item} x${qty}
+`;
+    }
+
+    message += `
+Total: Rp${total.toLocaleString('id-ID')}`;
+
+    let waUrl =
+        "https://wa.me/6287857365303?text=" +
+        encodeURIComponent(message);
+
+    window.open(waUrl,'_blank');
 }
+
 </script>
 
 </body>

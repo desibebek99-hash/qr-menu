@@ -296,20 +296,7 @@ body{
 
     <div class="input-group">
         <label>Atas Nama</label>
-        <input
-            type="text"
-            id="customerName"
-            document
-.getElementById("customerName")
-.addEventListener("input",function(){
-
-    localStorage.setItem(
-        "customerName",
-        this.value
-    );
-
-});
-            placeholder="Masukkan nama pelanggan">
+        <input type="text" id="customerName" placeholder="Masukkan nama pelanggan">
     </div>
 
     <div id="cartList">
@@ -408,6 +395,17 @@ if(savedName){
     ).value = savedName;
 
 }
+
+document
+.getElementById("customerName")
+.addEventListener("input",function(){
+
+    localStorage.setItem(
+        "customerName",
+        this.value
+    );
+
+});
 let cart =
 JSON.parse(localStorage.getItem("cart")) || {};
 
@@ -543,20 +541,19 @@ function renderCart(){
     document.getElementById("totalHarga").innerHTML =
         "Rp" + total.toLocaleString('id-ID');
 }
-const paymentMethod =
-document.querySelector(
-'input[name="paymentMethod"]:checked'
-);
+function sendOrder(){
 
-if(!paymentMethod){
-
-    alert(
-        "Silakan pilih metode pembayaran"
+    const paymentMethod =
+    document.querySelector(
+    'input[name="paymentMethod"]:checked'
     );
 
-    return;
-}
-function sendOrder(){
+    if(!paymentMethod){
+
+        alert("Silakan pilih metode pembayaran");
+
+        return;
+    }
 
     if(Object.keys(cart).length === 0){
 

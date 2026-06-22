@@ -948,38 +948,41 @@ ${note}
 window.open(url,"_blank");
 
 let sent = confirm(
-    "Apakah pesanan sudah berhasil dikirim?"
+    "Kirim pesanan ke WhatsApp?"
 );
 
-if(sent){
+if(!sent){
+    return;
+}
 
-    localStorage.removeItem("cart");
-    localStorage.removeItem("customerName");
+window.open(url,"_blank");
 
-    cart = {};
+localStorage.removeItem("cart");
+localStorage.removeItem("customerName");
 
-    document.getElementById(
-        "customerName"
-    ).value = "";
+cart = {};
 
-    document.getElementById(
-        "orderNote"
-    ).value = "";
+document.getElementById(
+    "customerName"
+).value = "";
 
-    renderCart();
+document.getElementById(
+    "orderNote"
+).value = "";
 
-    paymentMethod = "";
+renderCart();
 
-    document
-    .querySelectorAll(".payment-btn")
-    .forEach(btn =>
-        btn.classList.remove("active")
-    );
+paymentMethod = "";
 
-    document.getElementById(
-        "qrisSection"
-    ).style.display = "none";
+document
+.querySelectorAll(".payment-btn")
+.forEach(btn =>
+    btn.classList.remove("active")
+);
 
+document.getElementById(
+    "qrisSection"
+).style.display = "none";
 } 
 }   // ← penutup function sendOrder()
 

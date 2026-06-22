@@ -210,6 +210,27 @@ body{
     cursor:pointer;
     background:#eee;
 }
+.payment-options{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.payment-btn{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#eee;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.payment-btn.active{
+    background:#4CAF50;
+    color:white;
+}
 
 </style>
 </head>
@@ -491,27 +512,29 @@ body{
         <span id="totalHarga">Rp0</span>
     </div>
     
-    <div class="input-group">
+   <div class="input-group">
 
     <label>Metode Pembayaran</label>
 
-    <label style="display:block;margin-top:8px;">
-        <input
-            type="radio"
-            name="paymentMethod"
-            value="Cash">
-        Cash
-    </label>
+    <div class="payment-options">
 
-    <label style="display:block;margin-top:8px;">
-        <input
-            type="radio"
-            name="paymentMethod"
-            value="QRIS">
-        QRIS
-    </label>
+        <button
+            type="button"
+            class="payment-btn"
+            onclick="selectPayment('Cash', this)">
+            💵 Cash
+        </button>
+
+        <button
+            type="button"
+            class="payment-btn"
+            onclick="selectPayment('QRIS', this)">
+            📱 QRIS
+        </button>
 
     </div>
+
+</div>
     <div
     id="qrisSection"
     style="display:none;margin-top:15px;">
@@ -745,6 +768,34 @@ function renderCart(){
     document.getElementById("totalHarga").innerHTML =
         "Rp" + total.toLocaleString('id-ID');
 }
+    let paymentMethod = "";
+
+function selectPayment(method, button){
+
+    paymentMethod = method;
+
+    document
+    .querySelectorAll(".payment-btn")
+    .forEach(btn =>
+        btn.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+    const qrisSection =
+    document.getElementById("qrisSection");
+
+    if(method === "QRIS"){
+
+        qrisSection.style.display = "block";
+
+    }else{
+
+        qrisSection.style.display = "none";
+
+    }
+
+}
 function sendOrder(){
 
     const paymentMethod =
@@ -752,12 +803,12 @@ function sendOrder(){
     'input[name="paymentMethod"]:checked'
     );
 
-    if(!paymentMethod){
+   if(paymentMethod === ""){
 
-        alert("Silakan pilih metode pembayaran");
+    alert("Silakan pilih metode pembayaran");
 
-        return;
-    }
+    return;
+}
 
     if(Object.keys(cart).length === 0){
 
@@ -805,7 +856,7 @@ Atas Nama: ${customerName}
 Total: Rp${total.toLocaleString('id-ID')}
 
 Metode Pembayaran:
-${paymentMethod.value}
+${paymentMethod}
 `;
 
     if(note.trim() !== ""){

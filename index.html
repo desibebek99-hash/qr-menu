@@ -942,12 +942,32 @@ ${note}
     }
 
     let url =
-        "https://wa.me/6287857365303?text=" +
-        encodeURIComponent(message);
+    "https://wa.me/6287857365303?text=" +
+    encodeURIComponent(message);
 
-    window.open(url,"_blank");
+window.open(url,"_blank");
+
+let sent = confirm(
+    "Apakah pesanan sudah berhasil dikirim?"
+);
+
+if(sent){
+
+    localStorage.removeItem("cart");
+    localStorage.removeItem("customerName");
+
+    cart = {};
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
+
+    document.getElementById(
+        "orderNote"
+    ).value = "";
+
+    renderCart();
 }
-renderCart();
 </script>
 
 </body>

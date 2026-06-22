@@ -182,21 +182,43 @@ body{
     grid-template-columns:repeat(2,1fr);
     gap:15px;
 }    
+
+.category-bar{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    margin-bottom:20px;
+}
+.category-btn{
+    border:none;
+    padding:10px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    background:#eee;
+}
+
 </style>
 </head>
 <body>
 
 <div class="header">
 
-    <h1>Menu Cafe</h1>
+    <h1>☕ Menu Cafe</h1>
 
     <div class="table-info" id="tableInfo">
         Meja -
     </div>
 
 </div>
+<div class="category-bar">
+<button class="category-btn" onclick="filterMenu('all')">Semua</button>
+<button class="category-btn" onclick="filterMenu('minuman')">Minuman</button>
+<button class="category-btn" onclick="filterMenu('makanan')">Makanan</button>
+<button class="category-btn" onclick="filterMenu('camilan')">Camilan</button>
+</div>
+
 <div class="menu-container">
-<div class="menu-card">
+<div class="menu-card minuman">
 
     <img
         src="images/kopi-susu.jpg"
@@ -219,7 +241,7 @@ body{
 
 </div>
 
-<div class="menu-card">
+<div class="menu-card minuman">
 
     <img
         src="images/americano.jpg"
@@ -241,7 +263,7 @@ body{
     </button>
 
 </div>
-<div class="menu-card">
+<div class="menu-card makanan">
 
     <img
         src="images/mie-goreng.jpg"
@@ -264,7 +286,7 @@ body{
 
 </div>
 
-<div class="menu-card">
+<div class="menu-card makanan">
 
     <img
         src="images/nasi-goreng.jpg"
@@ -454,7 +476,31 @@ function addItem(name,price){
     }
 
    saveCart();
-   renderCart();
+   
+function filterMenu(category){
+
+    const menus =
+    document.querySelectorAll('.menu-card');
+
+    menus.forEach(menu=>{
+
+        if(category === 'all' ||
+           menu.classList.contains(category)){
+
+            menu.style.display = 'block';
+
+        }else{
+
+            menu.style.display = 'none';
+
+        }
+
+    });
+
+}
+
+renderCart();
+
 }
 
 function increase(name){

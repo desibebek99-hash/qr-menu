@@ -545,7 +545,10 @@ function addItem(name,price){
 
     }
 
-   saveCart();
+    saveCart();
+    renderCart();
+
+}
    
 function filterMenu(category){
 
@@ -554,10 +557,12 @@ function filterMenu(category){
 
     menus.forEach(menu=>{
 
-        if(category === 'all' ||
-           menu.classList.contains(category)){
+        if(
+            category === 'all' ||
+            menu.classList.contains(category)
+        ){
 
-            menu.style.display = 'block';
+            menu.style.display = '';
 
         }else{
 
@@ -566,10 +571,6 @@ function filterMenu(category){
         }
 
     });
-
-}
-
-renderCart();
 
 }
 

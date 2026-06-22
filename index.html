@@ -324,7 +324,55 @@ body{
         Total:
         <span id="totalHarga">Rp0</span>
     </div>
+    
+    <div class="input-group">
 
+    <label>Metode Pembayaran</label>
+
+    <label style="display:block;margin-top:8px;">
+        <input
+            type="radio"
+            name="paymentMethod"
+            value="Cash">
+        Cash
+    </label>
+
+    <label style="display:block;margin-top:8px;">
+        <input
+            type="radio"
+            name="paymentMethod"
+            value="QRIS">
+        QRIS
+    </label>
+
+    </div>
+    <div
+    id="qrisSection"
+    style="display:none;margin-top:15px;">
+
+    <h3>Pembayaran QRIS</h3>
+
+    <img
+        src="images/qris.jpg"
+        alt="QRIS"
+        style="
+            width:100%;
+            max-width:300px;
+            display:block;
+            margin:auto;
+            border-radius:10px;
+        ">
+
+    <p style="
+        text-align:center;
+        margin-top:10px;
+        color:#666;
+    ">
+        Scan QRIS untuk pembayaran
+    </p>
+
+</div>
+    
     <div class="input-group">
         <label>Catatan Pesanan</label>
 
@@ -371,6 +419,26 @@ function saveCart(){
     );
 
 }
+    document.addEventListener("change",function(e){
+
+    if(e.target.name === "paymentMethod"){
+
+        const qrisSection =
+        document.getElementById("qrisSection");
+
+        if(e.target.value === "QRIS"){
+
+            qrisSection.style.display = "block";
+
+        }else{
+
+            qrisSection.style.display = "none";
+
+        }
+
+    }
+
+});
 
 function addItem(name,price){
 
@@ -475,7 +543,19 @@ function renderCart(){
     document.getElementById("totalHarga").innerHTML =
         "Rp" + total.toLocaleString('id-ID');
 }
+const paymentMethod =
+document.querySelector(
+'input[name="paymentMethod"]:checked'
+);
 
+if(!paymentMethod){
+
+    alert(
+        "Silakan pilih metode pembayaran"
+    );
+
+    return;
+}
 function sendOrder(){
 
     if(Object.keys(cart).length === 0){
@@ -520,8 +600,11 @@ Atas Nama: ${customerName}
     const note =
         document.getElementById("orderNote").value;
 
-    message += `
+   message += `
 Total: Rp${total.toLocaleString('id-ID')}
+
+Metode Pembayaran:
+${paymentMethod.value}
 `;
 
     if(note.trim() !== ""){

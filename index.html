@@ -246,7 +246,6 @@ body{
 
 </div>
 
-</div>
 <div class="category-bar">
 <button class="category-btn" onclick="filterMenu('all')">Semua</button>
 <button class="category-btn" onclick="filterMenu('minuman')">Minuman</button>
@@ -619,26 +618,6 @@ function saveCart(){
     );
 
 }
-    document.addEventListener("change",function(e){
-
-    if(e.target.name === "paymentMethod"){
-
-        const qrisSection =
-        document.getElementById("qrisSection");
-
-        if(e.target.value === "QRIS"){
-
-            qrisSection.style.display = "block";
-
-        }else{
-
-            qrisSection.style.display = "none";
-
-        }
-
-    }
-
-});
 
 function addItem(name,price){
 
@@ -798,18 +777,14 @@ function selectPayment(method, button){
 }
 function sendOrder(){
 
-    const paymentMethod =
-    document.querySelector(
-    'input[name="paymentMethod"]:checked'
-    );
+    if(!paymentMethod){
 
-   if(paymentMethod === ""){
-
-    alert("Silakan pilih metode pembayaran");
+      alert(
+          "Silakan pilih metode pembayaran"
+      );
 
     return;
 }
-
     if(Object.keys(cart).length === 0){
 
         alert("Belum ada pesanan");
@@ -853,11 +828,11 @@ Atas Nama: ${customerName}
         document.getElementById("orderNote").value;
 
    message += `
-Total: Rp${total.toLocaleString('id-ID')}
+   Total: Rp${total.toLocaleString('id-ID')}
 
-Metode Pembayaran:
-${paymentMethod}
-`;
+   Metode Pembayaran:
+   ${paymentMethod}
+   `;
 
     if(note.trim() !== ""){
 

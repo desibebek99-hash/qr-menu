@@ -947,6 +947,10 @@ ${note}
 
 window.open(url,"_blank");
 
+let sent = confirm(
+    "Apakah pesanan sudah berhasil dikirim?"
+);
+
 if(sent){
 
     localStorage.removeItem("cart");
@@ -976,13 +980,11 @@ if(sent){
         "qrisSection"
     ).style.display = "none";
 
-}
 
 }   // ← penutup function sendOrder()
 
 renderCart();
 
-</script>
 </script>
 
 </body>

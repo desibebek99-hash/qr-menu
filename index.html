@@ -23,12 +23,26 @@ body{
 }
 
 .header{
-    background:#222;
-    color:white;
-    padding:20px;
+    background-image:url('images/header.jpg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    height:220px;
+
     border-radius:15px;
-    text-align:center;
+
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+
+    padding:20px;
+
     margin-bottom:20px;
+
+    position:relative;
+    overflow:hidden;
+
 }
 
 .header h1{
@@ -203,11 +217,13 @@ body{
 
 <div class="header">
 
-    <h1>☕ Menu Cafe</h1>
-
-    <div class="table-info" id="tableInfo">
+    <div
+        class="table-info"
+        id="tableInfo">
         Meja -
     </div>
+
+</div>
 
 </div>
 <div class="category-bar">

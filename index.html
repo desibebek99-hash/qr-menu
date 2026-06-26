@@ -237,6 +237,14 @@ body{
     color:white;
 }
 
+
+/* TOAST */
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%) translateY(30px);background:#333;color:#fff;padding:14px 24px;border-radius:30px;font-size:15px;opacity:0;visibility:hidden;transition:.3s;z-index:99999;box-shadow:0 6px 15px rgba(0,0,0,.25)}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.badge.bump{animation:bump .35s}
+@keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.add-btn:active{transform:scale(.96)}
+
 </style>
 </head>
 <body>
@@ -717,6 +725,8 @@ function saveCart(){
 
 }
 
+function showToast(text){const t=document.getElementById('toast');t.innerHTML=text;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
 function addItem(name,price){
 
     if(cart[name]){
@@ -734,6 +744,8 @@ function addItem(name,price){
 
     saveCart();
     renderCart();
+    let totalItem=0;for(let k in cart){totalItem+=cart[k].qty;}
+    showToast('🛒 <b>'+name+'</b> ditambahkan<br>Total Keranjang: <b>'+totalItem+'</b> item');
 
 }
    
@@ -839,8 +851,8 @@ function renderCart(){
     document.getElementById("cartList").innerHTML =
         html;
 
-    document.getElementById("itemCount").innerHTML =
-        count;
+    const badge=document.getElementById("itemCount");
+    badge.innerHTML=count;badge.classList.remove("bump");void badge.offsetWidth;badge.classList.add("bump");
 
     document.getElementById("totalHarga").innerHTML =
         "Rp" + total.toLocaleString('id-ID');
@@ -988,6 +1000,7 @@ renderCart();
 
 </script>
 
+<div id="toast" class="toast"></div>
 </body>
 </html>
 
